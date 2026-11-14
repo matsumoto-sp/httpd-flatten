@@ -8,7 +8,7 @@ cat > "$TMP/httpd.conf" <<EOT
 ServerRoot "$TMP"
 Define CONF conf.d
 IncludeOptional missing/*.conf
-Include ${CONF}/*.conf
+Include \${CONF}/*.conf
 <IfModule module_not_loaded>
 Include deep/child.conf
 </IfModule>
@@ -40,7 +40,7 @@ if bash "$SCRIPT" "$TMP/httpd.conf" > /dev/null 2> "$TMP/err"; then
     echo 'cycle must fail' >&2; exit 1
 fi
 grep -q 'recursive Include cycle' "$TMP/err"
-printf 'Include ${UNDEFINED_TEST_VAR_589}/*.conf\n' > "$TMP/deep/child.conf"
+printf 'Include \${UNDEFINED_TEST_VAR_589}/*.conf\n' > "$TMP/deep/child.conf"
 if bash "$SCRIPT" "$TMP/httpd.conf" > /dev/null 2> "$TMP/err"; then
     echo 'undefined variable must fail' >&2; exit 1
 fi
